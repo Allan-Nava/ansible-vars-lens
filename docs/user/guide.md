@@ -115,6 +115,31 @@ Dal più basso al più alto (layer *inventory* di Ansible, `hash_behaviour=repla
 
 ---
 
+## 5.1 Confronto tra due host (AVL-18)
+
+Per capire *perché* due host si comportano diversamente:
+
+1. Tasto destro su un host nell'explorer ▸ **"Compare Effective Variables Between Hosts"**
+   (oppure `⇧⌘P` → stesso comando, poi scegli i due host).
+2. Si apre un documento con **solo le variabili che differiscono**:
+
+```yaml
+# Variable diff: web-01  vs  web-02
+# only variables whose effective value differs are shown
+
+# changed  (web-01: host_vars/web-01/override.yml  |  web-02: group_vars/web/main.yml)
+timeout:
+  web-01: 90
+  web-02: 60
+
+# only in web-01  (from host_vars/web-01/override.yml)
+role_hint: frontend
+```
+
+- `changed` → presente in entrambi con valore diverso (mostra i due valori + provenance).
+- `only in <host>` → presente solo per quell'host.
+- Le variabili con **stesso valore effettivo** sono omesse.
+
 ## 6. Hover su `{{ variable }}`
 
 1. Nella status bar clicca **"AVL: <host>"** e scegli l'host di riferimento.

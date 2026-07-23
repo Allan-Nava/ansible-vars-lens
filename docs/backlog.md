@@ -38,6 +38,14 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-16 | `[script]` | Video demo/tutorial | Storyboard/script pronto → `docs/user/demo-script.md`. **Video da registrare** (non versionato). |
 | AVL-17 | `[rfc]` | Plugin API (Research) | RFC di design pronta → `docs/architecture/rfc-plugin-api.md`. Nessun codice: attende accettazione. |
 
+### v0.8.0 — Variable insight (Next)
+
+| ID | Status | Title | Description |
+|----|--------|-------|-------------|
+| AVL-18 | ✅ | Diff variables between two hosts | Comando "Compare Hosts" → documento con le sole variabili che differiscono (changed / only-a / only-b), con provenance. |
+| AVL-19 | `[backlog]` | Go-to-definition | Dal nome variabile (hover/doc risolto) al file+riga che la definisce; il path vincente c'è già, manca la riga. |
+| AVL-20 | `[backlog]` | CodeLens "overridden" | Sopra una variabile in group_vars, lens "sovrascritta per N host da …". |
+
 ## Done (v0.1 → v0.6)
 
 | ID | Status | Title |

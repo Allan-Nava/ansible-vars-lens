@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.8.0
+
+### Added
+
+- **Milestone v0.8.0 — Variable insight**:
+  - **Diff variabili tra due host (AVL-18)**: nuovo comando *"Compare Effective Variables
+    Between Hosts"* (anche da menu contestuale su un host) → documento con le sole variabili
+    che differiscono (`changed` / only-in-A / only-in-B), ciascuna con la provenance.
+    Core: `diffHosts()` + `renderDiff()` in `src/core/resolver.ts`, coperti da test.
+  - Pianificati: Go-to-definition (AVL-19), CodeLens "overridden" (AVL-20).
+- Logo nel `README.md` (header centrato con `media/icon.png`).
+
+### Fixed
+
+- **URL repository errato** in `package.json`: era `ansible-var-lens` (senza `s`), il repo
+  reale è `ansible-vars-lens`. Correggeva link rotti su Marketplace (Repository/Support/Learn)
+  e il rendering delle immagini relative.
+
 ## 0.7.0
 
 ### Added

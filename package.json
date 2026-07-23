@@ -2,13 +2,13 @@
   "name": "ansible-var-lens",
   "displayName": "Ansible Var Lens",
   "description": "See the EFFECTIVE value of every Ansible variable per host: merged group_vars/host_vars with precedence, provenance, inventory explorer and {{ var }} hovers.",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "publisher": "allannava95",
   "license": "MIT",
   "icon": "media/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Allan-Nava/ansible-var-lens"
+    "url": "https://github.com/Allan-Nava/ansible-vars-lens"
   },
   "engines": {
     "vscode": "^1.85.0"
@@ -62,6 +62,10 @@
       {
         "command": "ansibleVarLens.selectHost",
         "title": "Ansible Var Lens: Select Host for Hovers"
+      },
+      {
+        "command": "ansibleVarLens.compareHosts",
+        "title": "Ansible Var Lens: Compare Effective Variables Between Hosts"
       }
     ],
     "menus": {
@@ -75,6 +79,10 @@
       "view/item/context": [
         {
           "command": "ansibleVarLens.showHostVars",
+          "when": "view == ansibleVarLens.inventory && viewItem == host"
+        },
+        {
+          "command": "ansibleVarLens.compareHosts",
           "when": "view == ansibleVarLens.inventory && viewItem == host"
         }
       ]

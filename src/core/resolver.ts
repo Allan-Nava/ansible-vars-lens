@@ -151,4 +151,68 @@ export function renderResolution(res: Resolution): string {
   return lines.join('\n');
 }
 
+// --- diff between two hosts (AVL-18) ---------------------------------------
+
+export interface VarDiff {
+  name: string;
+  /** Resolved var for host A (undefined when the var is absent for A). */
+  a?: ResolvedVar;
+  /** Resolved var for host B (undefined when the var is absent for B). */
+  b?: ResolvedVar;
+  status: 'only-a' | 'only-b' | 'changed';
+}
+
+/** Stable stringify (sorted keys) so key ordering never counts as a difference. */
+function stableStringify(value: unknown): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
+  const keys = Object.keys(value as Record<string, unknown>).sort();
+  return `{${keys.map((k) => `${JSON.stringify(k)}:${stableStringify((value as Record<string, unknown>)[k])}`).join(',')}}`;
+}
+
+/** Variables whose *effective* value differs between two hosts (equal ones omitted). */
+export function diffHosts(root: string, inv: Inventory, hostA: string, hostB: string): VarDiff[] {
+  const ra = resolveHostVars(root, inv, hostA);
+  const rb = resolveHostVars(root, inv, hostB);
+  const names = new Set<string>([...ra.vars.keys(), ...rb.vars.keys()]);
+  const diffs: VarDiff[] = [];
+  for (const name of [...names].sort((x, y) => x.localeCompare(y))) {
+    const a = ra.vars.get(name);
+    const b = rb.vars.get(name);
+    if (a && !b) diffs.push({ name, a, status: 'only-a' });
+    else if (!a && b) diffs.push({ name, b, status: 'only-b' });
+    else if (a && b && stableStringify(a.value) !== stableStringify(b.value)) {
+      diffs.push({ name, a, b, status: 'changed' });
+    }
+  }
+  return diffs;
+}
+
+/** Renders a host diff as a readable YAML document (valid YAML, no duplicate keys). */
+export function renderDiff(hostA: string, hostB: string, diffs: VarDiff[]): string {
+  const lines: string[] = [
+    `# Variable diff: ${hostA}  vs  ${hostB}`,
+    `# only variables whose effective value differs are shown`,
+    '',
+  ];
+  if (diffs.length === 0) {
+    lines.push(`# (no differences — ${hostA} and ${hostB} have identical effective variables)`);
+    return lines.join('\n');
+  }
+  for (const d of diffs) {
+    if (d.status === 'only-a') {
+      lines.push(`# only in ${hostA}  (from ${d.a!.source})`);
+      lines.push(dumpYaml({ [d.name]: d.a!.value }).trimEnd());
+    } else if (d.status === 'only-b') {
+      lines.push(`# only in ${hostB}  (from ${d.b!.source})`);
+      lines.push(dumpYaml({ [d.name]: d.b!.value }).trimEnd());
+    } else {
+      lines.push(`# changed  (${hostA}: ${d.a!.source}  |  ${hostB}: ${d.b!.source})`);
+      lines.push(dumpYaml({ [d.name]: { [hostA]: d.a!.value, [hostB]: d.b!.value } }).trimEnd());
+    }
+    lines.push('');
+  }
+  return lines.join('\n');
+}
+
 export { VAULTED };

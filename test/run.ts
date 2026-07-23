@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 import { loadInventory, hostGroups } from '../src/core/inventory';
-import { resolveHostVars, renderResolution } from '../src/core/resolver';
+import { resolveHostVars, renderResolution, diffHosts, renderDiff } from '../src/core/resolver';
 
 let failures = 0;
 function test(name: string, fn: () => void): void {
@@ -113,6 +113,37 @@ test('render includes provenance comments', () => {
   assert.ok(text.includes('# from: host_vars/web-01/override.yml'));
   assert.ok(text.includes('#   overrides: group_vars/web/main.yml'));
   assert.ok(text.includes('timeout: 90'));
+});
+
+test('diffHosts: only differing effective vars, with status', () => {
+  const diffs = diffHosts(root, inv, 'web-01', 'web-02');
+  const byName = new Map(diffs.map((d) => [d.name, d]));
+  // timeout: 90 (host_vars web-01) vs 60 (group_vars/web) → changed
+  assert.strictEqual(byName.get('timeout')!.status, 'changed');
+  assert.strictEqual(byName.get('timeout')!.a!.value, 90);
+  assert.strictEqual(byName.get('timeout')!.b!.value, 60);
+  // ansible_host differs inline
+  assert.strictEqual(byName.get('ansible_host')!.status, 'changed');
+  // only web-01 has these
+  assert.strictEqual(byName.get('role_hint')!.status, 'only-a');
+  assert.strictEqual(byName.get('ansible_user')!.status, 'only-a');
+  // equal vars are omitted
+  assert.ok(!byName.has('domain'));
+  assert.ok(!byName.has('nginx'));
+  assert.ok(!byName.has('tier'));
+});
+
+test('renderDiff: valid content with changed nested values', () => {
+  const text = renderDiff('web-01', 'web-02', diffHosts(root, inv, 'web-01', 'web-02'));
+  assert.ok(text.includes('# Variable diff: web-01  vs  web-02'));
+  assert.ok(text.includes('# changed'));
+  assert.ok(text.includes('web-01: 90'));
+  assert.ok(text.includes('web-02: 60'));
+  assert.ok(text.includes('# only in web-01'));
+});
+
+test('diffHosts: identical host has no diffs', () => {
+  assert.deepStrictEqual(diffHosts(root, inv, 'web-01', 'web-01'), []);
 });
 
 // --- optional smoke test against a real repo --------------------------------

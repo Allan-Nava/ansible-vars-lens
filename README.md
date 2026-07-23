@@ -1,4 +1,8 @@
-# Ansible Var Lens
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Allan-Nava/ansible-vars-lens/main/media/icon.png" alt="Ansible Var Lens logo" width="128" height="128">
+</p>
+
+<h1 align="center">Ansible Var Lens</h1>
 
 **See the *effective* value of every Ansible variable, per host.**
 
@@ -17,6 +21,7 @@ In any non-trivial Ansible repo, the daily question is *"what is the final value
   ```
 
 - **`{{ variable }}` hovers** — pick a host (status bar), then hover any `{{ var }}` in playbooks/templates to see its resolved value for that host and where it was defined.
+- **Compare two hosts** — right-click a host ▸ *Compare Effective Variables Between Hosts* (or run the command) to open a document with **only the variables that differ** — `changed` / only-in-A / only-in-B, each with its provenance.
 - **Vault-aware** — fully vault-encrypted files are skipped and reported; inline `!vault` scalars show as `<vaulted>`.
 - **Zero setup** — reads `ansible.cfg` (`inventory = ...`) or auto-detects `./inventory`, `./hosts`; `group_vars`/`host_vars` as single files or directories, next to the repo root or the inventory.
 

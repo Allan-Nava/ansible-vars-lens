@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { Inventory, loadInventory, groupDepths } from './core/inventory';
-import { resolveHostVars, renderResolution } from './core/resolver';
+import { resolveHostVars, renderResolution, diffHosts, renderDiff } from './core/resolver';
 import { dumpYaml } from './core/yamlutil';
 
 const SCHEME = 'ansible-var-lens';
@@ -107,8 +107,14 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.workspace.registerTextDocumentContentProvider(SCHEME, {
       onDidChange: contentEmitter.event,
       provideTextDocumentContent(uri: vscode.Uri): string {
-        const host = path.basename(uri.path, '.yml');
         if (!model.inventory || !model.root) return '# inventory not loaded';
+        if (uri.path === '/diff.yml') {
+          const params = new URLSearchParams(uri.query);
+          const a = params.get('a') ?? '';
+          const b = params.get('b') ?? '';
+          return renderDiff(a, b, diffHosts(model.root, model.inventory, a, b));
+        }
+        const host = path.basename(uri.path, '.yml');
         return renderResolution(resolveHostVars(model.root, model.inventory, host));
       },
     })
@@ -136,6 +142,20 @@ export function activate(context: vscode.ExtensionContext): void {
       selectedHost = host;
       void context.workspaceState.update('ansibleVarLens.host', host);
       updateStatus();
+    }),
+
+    vscode.commands.registerCommand('ansibleVarLens.compareHosts', async (hostA?: string) => {
+      if (!hostA) hostA = await pickHost(model, 'First host to compare');
+      if (!hostA) return;
+      const hostB = await pickHost(model, `Compare "${hostA}" with…`, hostA);
+      if (!hostB) return;
+      const uri = vscode.Uri.parse(
+        `${SCHEME}:/diff.yml?a=${encodeURIComponent(hostA)}&b=${encodeURIComponent(hostB)}`
+      );
+      contentEmitter.fire(uri);
+      const doc = await vscode.workspace.openTextDocument(uri);
+      await vscode.languages.setTextDocumentLanguage(doc, 'yaml');
+      await vscode.window.showTextDocument(doc, { preview: true });
     })
   );
 
@@ -173,17 +193,20 @@ export function activate(context: vscode.ExtensionContext): void {
   model.refresh();
 }
 
-async function pickHost(model: InventoryModel): Promise<string | undefined> {
+async function pickHost(
+  model: InventoryModel,
+  placeHolder = 'Host to resolve variables for',
+  exclude?: string
+): Promise<string | undefined> {
   if (!model.inventory) return undefined;
   const items = [...model.inventory.hosts.values()]
+    .filter((h) => h.name !== exclude)
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((h) => ({
       label: h.name,
       description: [h.vars['ansible_host'], h.groups.join(', ')].filter(Boolean).join('  —  '),
     }));
-  const picked = await vscode.window.showQuickPick(items, {
-    placeHolder: 'Host to resolve variables for',
-  });
+  const picked = await vscode.window.showQuickPick(items, { placeHolder });
   return picked?.label;
 }
 
