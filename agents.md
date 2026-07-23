@@ -10,8 +10,8 @@ Questo file definisce le regole operative per gli agent (Copilot, Claude, altri 
 - **MAI `git push`**: lo fa sempre l'utente. MAI `Co-Authored-By` nei commit.
 - **Documentare SEMPRE** feature, debug e interventi: doc `.md` in `docs/` (opzionale: `docs/incidents/` per bug rilevanti, `docs/architecture/` per decisioni tecniche). Senza chiedere. Ogni doc: **schema/diagramma ASCII**, esempio di uso, voce nella **nav di documentazione** (se presente).
 - **Allineare tutto**: ogni modifica fattuale va propagata a `.md`, `.ts`, `.json`, `README.md`, CHANGELOG, test correlati. Doc nuove separate `user/` vs `dev/` sin dalla v1.
-- **Todo → `TODO.md` o issue GitHub** (sorgente unica). Non sparpagliare TODO.
-- **Verificare i test**: `npm run test` deve passare completamente. Build locale con `npm run build`.
+- **Todo -> `BACKLOG.md`** (sorgente unica, item con id stabile `AVL-n`). Non sparpagliare TODO.
+- **Verificare i test**: `npx tsc --noEmit` + `npm test` devono passare completamente (stessi gate della CI). Build locale con `npm run build`.
 
 ## Pattern per interventi su feature (validato)
 
@@ -30,6 +30,11 @@ Questo file definisce le regole operative per gli agent (Copilot, Claude, altri 
 - Build: `npm run build` genera bundle ottimizzato — verificare il weight prima di commit.
 - Dipendenze: minimizzare le dipendenze esterne — prediligere soluzioni native di VS Code API.
 - Extension API: verificare la versione di VS Code supportata prima di usare feature nuove.
+- **Precedenza modellata = solo layer inventory/vars-files** (`hash_behaviour=replace`): role/play vars fuori scope.
+- **File non-YAML dentro `host_vars/<host>/` si ignorano**; file vault-cifrati si saltano e si segnalano, mai errore.
+- `test/run.ts` senza top-level await (per tsc e' CJS): tutto dentro `main()`.
+- `publisher` in package.json e' placeholder: allinearlo prima del publish Marketplace.
+- Smoke test su repo Ansible reali (`AVL_SMOKE_REPO`): sola lettura.
 
 ## Puntatori
 
