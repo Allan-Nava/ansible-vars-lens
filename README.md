@@ -38,6 +38,16 @@ Role defaults/vars and play vars are out of scope: they belong to plays, not to 
 |---|---|---|
 | `ansibleVarLens.inventoryPaths` | `[]` | Inventory files/dirs relative to the workspace root. Empty = auto-detect. |
 
+## Documentation
+
+- 📖 **[User Guide](docs/user/guide.md)** — setup, usage, effective vars, hover, vault, troubleshooting
+- 🎬 **[Demo script](docs/user/demo-script.md)** — storyboard della demo video (5 min)
+- 🤝 **[Contributing](CONTRIBUTING.md)** — dev setup, TDD, convenzioni commit/release, PR
+- 🧩 **[RFC: Plugin API](docs/architecture/rfc-plugin-api.md)** — design per resolver/transformer custom
+- 🗺️ **[Backlog & roadmap](docs/backlog.md)** — milestone e item `AVL-n`
+
+Indice completo in [`docs/README.md`](docs/README.md).
+
 ## Development
 
 ### Setup (TDD enforced locally)

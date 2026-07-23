@@ -29,14 +29,14 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-12 | ✅ | Diagnostics rules | Segnalare variabili non-risolte, undefined inventory path, vault errors in Problems panel. |
 | AVL-13 | ✅ | Config migration guide | Helper per utenti da extension vecchie / config legacy. |
 
-### v0.7.0 — Documentation & Community (Next)
+### v0.7.0 — Documentation & Community ✅
 
 | ID | Status | Title | Description |
 |----|--------|-------|-------------|
-| AVL-14 | `[backlog]` | User guide & tutorials | Guida completa per setup, usage, troubleshooting. |
-| AVL-15 | `[backlog]` | Contributing guide | CONTRIBUTING.md, developer setup, PR guidelines. |
-| AVL-16 | `[backlog]` | Video demo/tutorial | Demo 5min su YouTube/GH Release per onboarding. |
-| AVL-17 | `[backlog]` | Plugin API (Research) | [RFC] Estendere con hook per custom resolvers/transformers. |
+| AVL-14 | ✅ | User guide & tutorials | Guida completa per setup, usage, troubleshooting → `docs/user/guide.md`. |
+| AVL-15 | ✅ | Contributing guide | `CONTRIBUTING.md`: dev setup, TDD, commit/release, PR guidelines. |
+| AVL-16 | `[script]` | Video demo/tutorial | Storyboard/script pronto → `docs/user/demo-script.md`. **Video da registrare** (non versionato). |
+| AVL-17 | `[rfc]` | Plugin API (Research) | RFC di design pronta → `docs/architecture/rfc-plugin-api.md`. Nessun codice: attende accettazione. |
 
 ## Done (v0.1 → v0.6)
 
@@ -62,10 +62,14 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-11 | ✅ | MarketPlace icon/branding design |
 | AVL-12 | ✅ | Diagnostics rules in Problems panel |
 | AVL-13 | ✅ | Config migration guide for legacy users |
+| AVL-14 | ✅ | User guide & tutorials (`docs/user/guide.md`) |
+| AVL-15 | ✅ | Contributing guide (`CONTRIBUTING.md`) |
 
 ## Guidelines
 
 - **Label `[backlog]`** = item NON proposto come "next milestone" ancora (e.g., RFC, research-needed, design TBD).
+- **Label `[script]`** = deliverable testuale pronto (es. storyboard), ma resta un artefatto esterno da produrre (video).
+- **Label `[rfc]`** = documento di design pronto; nessun codice finché la RFC non è accettata.
 - **No label** = ready for development (definito, stima chiara).
 - **Status update**: ogni commit che chiude un item deve aggiornare questo file (move a Done, update status).
 - **Idempotent**: backlog-lint CI gate verifica coerenza ID (unici, sequ.contiguity nella colonna ID).

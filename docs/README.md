@@ -1,5 +1,16 @@
 # Documentation — Ansible Var Lens
 
+## Index
+
+| Doc | Audience | Contenuto |
+|-----|----------|-----------|
+| [`user/guide.md`](user/guide.md) | utenti | setup, uso, effective vars, hover, vault, troubleshooting (AVL-14) |
+| [`user/demo-script.md`](user/demo-script.md) | utenti | storyboard/script della demo video 5min (AVL-16) |
+| [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | dev | setup, TDD, convenzioni commit/release, PR (AVL-15) |
+| [`architecture/rfc-plugin-api.md`](architecture/rfc-plugin-api.md) | dev | RFC Plugin API per resolver/transformer custom (AVL-17) |
+| [`testing-release.md`](testing-release.md) | dev | testing + release + troubleshooting Marketplace (401) |
+| [`backlog.md`](backlog.md) | tutti | sorgente unica roadmap + milestone |
+
 ## Backlog & Milestones
 
 ### Overview
@@ -44,10 +55,16 @@ git push origin main --follow-tags
 
 ```
 docs/
+├── README.md           ← Questo indice
 ├── backlog.md          ← Sorgente unica: milestones + item status
-├── scripts/
-│   └── new-release.sh  ← Release helper
-└── architecture/       ← Design decision records (optional)
+├── testing-release.md  ← Testing + release + troubleshooting Marketplace
+├── user/
+│   ├── guide.md        ← User guide (AVL-14)
+│   └── demo-script.md  ← Storyboard demo video (AVL-16)
+├── architecture/
+│   └── rfc-plugin-api.md  ← RFC Plugin API (AVL-17)
+└── scripts/
+    └── new-release.sh  ← Release helper
 ```
 
 ### TDD Standard

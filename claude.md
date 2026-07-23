@@ -8,7 +8,7 @@ VS Code extension per la risoluzione e visualizzazione di variabili Ansible. Res
 - **MAI `git push`** — lo fa sempre l'utente. MAI `Co-Authored-By` nei commit.
 - **Documentare SEMPRE** feature, debug e interventi: doc `.md` in `docs/` (opzionale: `docs/incidents/` per bug rilevanti, `docs/architecture/` per decisioni tecniche). **Senza chiederlo**. Ogni doc: **schema/diagramma ASCII**, esempio di uso, voce nella **nav di documentazione** (se presente).
 - **Allineare tutto**: ogni modifica fattuale va propagata a `.md`, `.ts`, `.json`, `README.md`, CHANGELOG, test correlati. Doc nuove separate `user/` vs `dev/` sin dalla v1.
-- **Todo → `BACKLOG.md`** (sorgente unica, item con id stabile `AVL-n`). Non sparpagliare TODO nei commenti.
+- **Todo → `docs/backlog.md`** (sorgente unica, item con id stabile `AVL-n`, sincronizzata con GitHub Milestones). Il `BACKLOG.md` in root è solo un puntatore. Non sparpagliare TODO nei commenti.
 - **Verificare i test** prima di commit: `npx tsc --noEmit` + `npm test` devono passare completamente (stessi gate della CI).
 
 ## Pattern per interventi su feature (validato)

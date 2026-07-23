@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.7.0
+
+### Added
+
+- **Documentation & Community** (milestone v0.7.0):
+  - User guide completa `docs/user/guide.md` — setup, uso, effective vars, hover, vault, troubleshooting (AVL-14)
+  - `CONTRIBUTING.md` — dev setup, standard TDD, convenzioni commit/release, PR guidelines (AVL-15)
+  - Storyboard/script della demo video 5min `docs/user/demo-script.md` (AVL-16, video da registrare a parte)
+  - RFC di design `docs/architecture/rfc-plugin-api.md` per Plugin API (custom resolver/transformer) (AVL-17)
+- Sezione **Documentation** nel `README.md` e indice in `docs/README.md`.
+
+### Changed
+
+- **Backlog consolidato**: `docs/backlog.md` è l'unica sorgente; il `BACKLOG.md` in root
+  (che aveva una numerazione divergente AVL-1…AVL-7) è ora solo un puntatore. Aggiornata
+  la regola in `CLAUDE.md`.
+
 ## 0.6.1
 
 ### Fixed
