@@ -50,42 +50,35 @@ Se **qualunque comando falisce**, non commitare fino a fix.
 
 ## Release Workflow
 
-### 1. Prepare release
+### 1. Prepare release (fully automated)
 
 ```bash
 ./docs/scripts/new-release.sh minor  # or patch, or X.Y.Z
-# → bumps package.json + CHANGELOG.md stub
 ```
 
-Edit `CHANGELOG.md` to fill in details.
+This automatically:
+- Bumps `package.json` version
+- Prepares `CHANGELOG.md` stub
+- Opens editor to edit CHANGELOG (fill in details)
+- **Commits** the changes
+- **Creates git tag**
 
-### 2. Verify tests pass locally
-
-```bash
-npm test && npx tsc --noEmit && npm run build
-```
-
-### 3. Commit & tag
-
-```bash
-git add package.json CHANGELOG.md <any-other-files>
-git commit -m "Release vX.Y.Z"
-git tag -a vX.Y.Z -m "Release X.Y.Z"
-```
-
-### 4. Push (triggers CI)
+### 2. Push (triggers CI)
 
 ```bash
 git push origin main --follow-tags
 ```
 
-### 5. Automatic actions:
+That's it! GitHub Actions handles everything else.
 
-- **GitHub Actions** runs:
-  - `test` + `type-check` + `build` gates (all must pass)
-  - `package` creates `.vsix` → uploaded to GitHub Releases
-  - `backlog-sync` syncs `docs/backlog.md` → GitHub Milestones + Issues
-  - `publish-marketplace` (if VSCE_PAT configured) publishes to Marketplace
+### Automatic actions on tag push
+
+- \u2705 **test** (`npm test`) must pass
+- \u2705 **type-check** (`tsc --noEmit`) must pass
+- \u2705 **build** (`npm run build`) must pass
+- \ud83d\udce6 **package** creates `.vsix` \u2192 uploaded to GitHub Releases
+- \ud83c\udfaf **backlog-sync** syncs `docs/backlog.md` \u2192 GitHub Milestones + Issues
+- \ud83d\ude80 **publish-marketplace** auto-publishes to Marketplace (if `VSCE_PAT` secret configured)
 
 ## VS Code Marketplace Publishing
 

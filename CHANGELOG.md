@@ -19,6 +19,10 @@
 - VS Code Marketplace automated publishing:
   - Publish workflow triggered on release tags (requires `VSCE_PAT` secret)
   - Automatic upload to Marketplace with no manual steps
+- **Automated release workflow**:
+  - `new-release.sh` now automatically commits and creates git tags
+  - No more manual `git commit` + `git tag` steps
+  - Just run `new-release.sh <version>` → `git push origin main --follow-tags`
 - Documentation: `docs/testing-release.md` with TDD standard + Marketplace setup guide
 
 ## 0.3.0

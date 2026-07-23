@@ -69,28 +69,20 @@ AVL_SMOKE_REPO=/path/to/your/ansible/repo npm test
 
 Roadmap in **[`docs/backlog.md`](docs/backlog.md)** (sorgente unica per milestones + feature planning).
 
-### Create a release
+### Create a release (automated)
 
 ```bash
-./docs/scripts/new-release.sh minor    # bumps version + prepares CHANGELOG
-# Edit CHANGELOG.md with details, then:
-git add package.json CHANGELOG.md
-git commit -m "Release vX.Y.Z"
-git tag -a vX.Y.Z -m "Release X.Y.Z"
+./docs/scripts/new-release.sh minor    # bumps version, commits, and tags automatically
+# (Edits CHANGELOG.md in your editor — fill in details)
+
+# Then just push:
 git push origin main --follow-tags
 ```
 
-### Automatic actions on tag push
-
-GitHub Actions trigger automatically:
-- ✅ Test gate: `npm test` must pass
-- ✅ Type check: `tsc --noEmit` must pass  
-- ✅ Build: `npm run build` must pass
-- 📦 Package: Creates `.vsix` → uploaded to GitHub Releases
-- 🎯 Backlog sync: syncs `docs/backlog.md` → GitHub Milestones + Issues
-- 🚀 Marketplace publish: auto-publishes to VS Code Marketplace (if `VSCE_PAT` secret configured)
-
-**Setup Marketplace publishing**: see [`docs/testing-release.md`](docs/testing-release.md)
+That's it! GitHub Actions automatically:
+- ✅ Runs tests + type check + build
+- 📦 Creates `.vsix` → GitHub Releases
+- 🚀 Publishes to VS Code Marketplace (if `VSCE_PAT` secret configured)
 
 ## License
 

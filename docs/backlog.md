@@ -51,6 +51,7 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | — | ✅ | Backlog automation + release workflow |
 | — | ✅ | TDD Standard (pre-commit hook + CI gates) |
 | — | ✅ | VS Code Marketplace automated publishing |
+| — | ✅ | Automated commit + tag in release workflow |
 
 ## Guidelines
 

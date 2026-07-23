@@ -21,19 +21,24 @@ Sorgente unica per il roadmap: **`docs/backlog.md`** — contiene:
 
 ### Command Reference
 
-**Create a new release:**
+**Create a new release (fully automated):**
 ```bash
-./docs/scripts/new-release.sh minor    # v0.3.0 → v0.4.0
-./docs/scripts/new-release.sh patch    # v0.3.0 → v0.3.1
-./docs/scripts/new-release.sh 1.0.0    # explicit version
+./docs/scripts/new-release.sh minor    # v0.3.0 → v0.4.0 (auto commit + tag)
+./docs/scripts/new-release.sh patch    # v0.3.0 → v0.3.1 (auto commit + tag)
+./docs/scripts/new-release.sh 1.0.0    # explicit version (auto commit + tag)
 ```
 
-Script prepara:
-- `package.json` versione aggiornata
-- `CHANGELOG.md` stub (riempire manualmente)
-- Istruzioni per commit + tag + push
+Script automatically:
+- Bumps `package.json` version
+- Prepares `CHANGELOG.md` stub
+- Opens editor to edit CHANGELOG
+- **Commits** the changes
+- **Creates git tag**
 
-**No automatic push** — lascia al developer il controllo.
+Then just push:
+```bash
+git push origin main --follow-tags
+```
 
 ### Structure
 
