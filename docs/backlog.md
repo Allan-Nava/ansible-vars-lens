@@ -38,7 +38,7 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-16 | `[backlog]` | Video demo/tutorial | Demo 5min su YouTube/GH Release per onboarding. |
 | AVL-17 | `[backlog]` | Plugin API (Research) | [RFC] Estendere con hook per custom resolvers/transformers. |
 
-## Done (v0.1 → v0.4)
+## Done (v0.1 → v0.5)
 
 | ID | Status | Title |
 |----|--------|-------|
@@ -52,6 +52,13 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | — | ✅ | TDD Standard (pre-commit hook + CI gates) |
 | — | ✅ | VS Code Marketplace automated publishing |
 | — | ✅ | Automated commit + tag in release workflow |
+| — | ✅ | v0.7.0 milestone with documentation & community features |
+| AVL-5 | ✅ | Cache invalidation with FS watch debounce |
+| AVL-6 | ✅ | Slow inventory parsing warning (> 2s) |
+| AVL-7 | ✅ | Syntax highlight in merged variables document |
+| AVL-8 | ✅ | Role defaults/play vars scope (RFC) |
+| AVL-9 | ✅ | Template variable preview with Jinja2 |
+| AVL-10 | ✅ | Inventory graph visualization (DAG/tree) |
 
 ## Guidelines
 
