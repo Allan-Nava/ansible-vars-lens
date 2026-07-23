@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+### Fixed
+
+- **Icona Marketplace reale**: aggiunto logo PNG 256×256 (`media/icon.png`, lente su layer di variabili con precedence) e collegato al campo `icon` top-level di `package.json`. Prima esisteva solo l'icona SVG dell'activity bar, quindi il listing Marketplace era privo di logo.
+- **Diagnosi publish Marketplace**: il job `publish-marketplace` falliva con `401 Failed request`. Il secret `VSCE_PAT` è presente ma il token è scaduto/revocato o con scope errato, oppure il publisher `allannava95` non è ancora creato. Va rigenerato un PAT Azure DevOps con scope **Marketplace → Manage** su **All accessible organizations** e creato il publisher su https://marketplace.visualstudio.com/manage. Vedi `docs/testing-release.md`.
+
 ## 0.6.0
 
 ### Added

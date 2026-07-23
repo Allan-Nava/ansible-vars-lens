@@ -138,4 +138,26 @@ Current status: [![CI/CD](https://github.com/Allan-Nava/ansible-var-lens/actions
 
 **Marketplace publish fails?**
 - Verify `VSCE_PAT` is correct (Personal Access Token, not regular PAT)
-- Check Publisher name matches `package.json`: `allan-nava`
+- Check Publisher name matches `package.json`: `allannava95`
+
+### `401 Failed request` durante `vsce publish` (diagnosi 2026-07-23)
+
+Sintomo: il job `publish-marketplace` arriva fino a `Publishing 'allannava95.ansible-var-lens vX.Y.Z'...`
+poi cade con `##[error]Failed request: (401)`. Il secret `VSCE_PAT` **è presente** (quindi lo skip
+non scatta), ma l'autenticazione al Marketplace viene rifiutata.
+
+```
+Test/TypeCheck/Build/Package  →  ✓
+Publish to VS Code Marketplace →  ✗  Failed request: (401)
+```
+
+Il `401` è sempre un problema di credenziali, non di build. Checklist di fix (tutto lato account):
+
+1. **PAT scaduto / revocato / scope errato.** Rigenerare su
+   https://dev.azure.com → User settings → Personal Access Tokens con:
+   - Organization: **All accessible organizations**
+   - Scopes: **Marketplace → Manage** (non solo "Publish").
+   Poi aggiornare il secret: `gh secret set VSCE_PAT`.
+2. **Publisher inesistente.** Il publisher `allannava95` deve esistere su
+   https://marketplace.visualstudio.com/manage e appartenere all'account che ha emesso il PAT.
+3. **Test rapido locale** (senza pubblicare): `npx @vscode/vsce verify-pat allannava95 --pat <PAT>`.

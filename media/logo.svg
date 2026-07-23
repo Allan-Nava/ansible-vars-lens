@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1f2430"/>
+      <stop offset="1" stop-color="#12151d"/>
+    </linearGradient>
+    <linearGradient id="lens" x1="150" y1="70" x2="210" y2="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff4d4d"/>
+      <stop offset="1" stop-color="#c40000"/>
+    </linearGradient>
+  </defs>
+
+  <!-- rounded background -->
+  <rect x="0" y="0" width="256" height="256" rx="56" fill="url(#bg)"/>
+
+  <!-- stacked variable layers (merge precedence: bottom = defaults, top = host_vars) -->
+  <g>
+    <rect x="44" y="150" width="120" height="20" rx="6" fill="#3a4152"/>
+    <rect x="44" y="150" width="72"  height="20" rx="6" fill="#5b667e"/>
+
+    <rect x="44" y="118" width="120" height="20" rx="6" fill="#465069"/>
+    <rect x="44" y="118" width="96"  height="20" rx="6" fill="#7a89a8"/>
+
+    <rect x="44" y="86"  width="120" height="20" rx="6" fill="#525d7a"/>
+    <rect x="44" y="86"  width="58"  height="20" rx="6" fill="#9db0d6"/>
+  </g>
+
+  <!-- effective value highlight bar -->
+  <rect x="44" y="182" width="120" height="20" rx="6" fill="#c40000" opacity="0.18"/>
+  <rect x="44" y="182" width="84"  height="20" rx="6" fill="#ff4d4d"/>
+
+  <!-- magnifying lens over the stack -->
+  <g>
+    <circle cx="176" cy="110" r="46" fill="none" stroke="url(#lens)" stroke-width="14"/>
+    <circle cx="176" cy="110" r="46" fill="#ff4d4d" opacity="0.10"/>
+    <line x1="210" y1="144" x2="238" y2="172" stroke="url(#lens)" stroke-width="16" stroke-linecap="round"/>
+    <!-- crosshair / var marker inside lens -->
+    <path d="M160 110h32M176 94v32" stroke="#ffd1d1" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</svg>
