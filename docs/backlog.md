@@ -21,15 +21,15 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-9 | `[backlog]` | Template variable preview | Preview di template Jinja2 con var risolte. |
 | AVL-10 | `[backlog]` | Inventory graph visualization | Visualizzare group hierarchy come DAG/tree interattivo. |
 
-### v0.6.0 — Integration & Polish
+### v0.6.0 — Integration & Polish ✅
 
 | ID | Status | Title | Description |
 |----|--------|-------|-------------|
-| AVL-11 | `[backlog]` | MarketPlace icon/branding | Design icona estesa + screenshot showcase. |
-| AVL-12 | `[backlog]` | Diagnostics rules | Segnalare variabili non-risolte, undefined inventory path, vault errors in Problems panel. |
-| AVL-13 | `[backlog]` | Config migration guide | Helper per utenti da extension vecchie / config legacy. |
+| AVL-11 | ✅ | MarketPlace icon/branding | Design icona estesa + screenshot showcase. |
+| AVL-12 | ✅ | Diagnostics rules | Segnalare variabili non-risolte, undefined inventory path, vault errors in Problems panel. |
+| AVL-13 | ✅ | Config migration guide | Helper per utenti da extension vecchie / config legacy. |
 
-### v0.7.0 — Documentation & Community
+### v0.7.0 — Documentation & Community (Next)
 
 | ID | Status | Title | Description |
 |----|--------|-------|-------------|
@@ -38,7 +38,7 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-16 | `[backlog]` | Video demo/tutorial | Demo 5min su YouTube/GH Release per onboarding. |
 | AVL-17 | `[backlog]` | Plugin API (Research) | [RFC] Estendere con hook per custom resolvers/transformers. |
 
-## Done (v0.1 → v0.5)
+## Done (v0.1 → v0.6)
 
 | ID | Status | Title |
 |----|--------|-------|
@@ -59,6 +59,9 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-8 | ✅ | Role defaults/play vars scope (RFC) |
 | AVL-9 | ✅ | Template variable preview with Jinja2 |
 | AVL-10 | ✅ | Inventory graph visualization (DAG/tree) |
+| AVL-11 | ✅ | MarketPlace icon/branding design |
+| AVL-12 | ✅ | Diagnostics rules in Problems panel |
+| AVL-13 | ✅ | Config migration guide for legacy users |
 
 ## Guidelines
 
