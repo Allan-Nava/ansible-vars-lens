@@ -1,0 +1,112 @@
+{
+  "name": "ansible-var-lens",
+  "displayName": "Ansible Var Lens",
+  "description": "See the EFFECTIVE value of every Ansible variable per host: merged group_vars/host_vars with precedence, provenance, inventory explorer and {{ var }} hovers.",
+  "version": "0.1.0",
+  "publisher": "allan-nava",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Allan-Nava/ansible-var-lens"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "ansible",
+    "inventory",
+    "group_vars",
+    "host_vars",
+    "variables",
+    "devops"
+  ],
+  "activationEvents": [
+    "workspaceContains:ansible.cfg",
+    "workspaceContains:**/group_vars/**",
+    "workspaceContains:**/host_vars/**"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ansibleVarLens",
+          "title": "Ansible Inventory",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "ansibleVarLens": [
+        {
+          "id": "ansibleVarLens.inventory",
+          "name": "Hosts & Groups"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "ansibleVarLens.refresh",
+        "title": "Ansible Var Lens: Refresh Inventory",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "ansibleVarLens.showHostVars",
+        "title": "Ansible Var Lens: Show Effective Variables for Host"
+      },
+      {
+        "command": "ansibleVarLens.selectHost",
+        "title": "Ansible Var Lens: Select Host for Hovers"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "ansibleVarLens.refresh",
+          "when": "view == ansibleVarLens.inventory",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "ansibleVarLens.showHostVars",
+          "when": "view == ansibleVarLens.inventory && viewItem == host"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Ansible Var Lens",
+      "properties": {
+        "ansibleVarLens.inventoryPaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Inventory files or directories, relative to the workspace root. Empty = auto-detect (ansible.cfg `inventory`, ./inventory, ./hosts)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "test": "node esbuild.mjs --test && node .test/run.mjs",
+    "package": "vsce package",
+    "vscode:prepublish": "npm run build"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.5.0"
+  }
+}
