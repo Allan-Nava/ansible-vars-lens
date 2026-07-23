@@ -5,15 +5,6 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 
 ## Milestones
 
-### v0.3.0 — Core Improvements
-
-| ID | Status | Title | Description |
-|----|--------|-------|-------------|
-| AVL-1 | `[backlog]` | Variable search/filter | Aggiungere search bar nell'inventory view per filtrare host/group/var. Supportare regex. |
-| AVL-2 | `[backlog]` | Vault batch decrypt | Opzione per decryptare bulk `!vault` scalars su richiesta (con `ansible-vault`). |
-| AVL-3 | `[backlog]` | Copy var to clipboard | Tasto destro su variabile → copia valore/path. |
-| AVL-4 | `[backlog]` | Multi-host comparison | Selezionare 2+ host e vedere variabili side-by-side (diff). |
-
 ### v0.4.0 — Performance & UX (Next)
 
 | ID | Status | Title | Description |
@@ -37,6 +28,15 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-11 | `[backlog]` | MarketPlace icon/branding | Design icona estesa + screenshot showcase. |
 | AVL-12 | `[backlog]` | Diagnostics rules | Segnalare variabili non-risolte, undefined inventory path, vault errors in Problems panel. |
 | AVL-13 | `[backlog]` | Config migration guide | Helper per utenti da extension vecchie / config legacy. |
+
+### v0.7.0 — Documentation & Community
+
+| ID | Status | Title | Description |
+|----|--------|-------|-------------|
+| AVL-14 | `[backlog]` | User guide & tutorials | Guida completa per setup, usage, troubleshooting. |
+| AVL-15 | `[backlog]` | Contributing guide | CONTRIBUTING.md, developer setup, PR guidelines. |
+| AVL-16 | `[backlog]` | Video demo/tutorial | Demo 5min su YouTube/GH Release per onboarding. |
+| AVL-17 | `[backlog]` | Plugin API (Research) | [RFC] Estendere con hook per custom resolvers/transformers. |
 
 ## Done (v0.1 → v0.4)
 

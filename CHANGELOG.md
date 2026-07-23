@@ -1,12 +1,20 @@
 # Changelog
 
+## 0.6.0 (Planned)
+
+### Integration & Polish
+
+- MarketPlace icon/branding design
+- Diagnostics rules in Problems panel
+- Config migration guide for legacy users
+
 ## 0.5.0 (Planned)
 
 ### Advanced Features
 
 - Role defaults/play vars scope (RFC)
-- Template variable preview
-- Inventory graph visualization
+- Template variable preview with Jinja2 rendering
+- Inventory graph visualization (DAG/tree)
 
 ## 0.4.0
 
