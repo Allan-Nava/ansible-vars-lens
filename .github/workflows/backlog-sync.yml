@@ -1,0 +1,97 @@
+name: Sync Backlog to GitHub Milestones
+
+# Triggered on release tag push or manual workflow dispatch
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to sync (e.g., v0.3.0)'
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync-backlog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Parse backlog and sync to GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          # Parse docs/backlog.md to extract milestones and issues
+          # This script creates GitHub milestones and issues from the backlog
+          
+          set -e
+          
+          # Extract milestones and issues from backlog.md
+          echo "📋 Parsing docs/backlog.md..."
+          
+          # Create milestones from section headers (e.g., "### v0.3.0 — Core Improvements")
+          while IFS= read -r line; do
+            if [[ $line =~ ^###\ \(v[0-9]+\.[0-9]+\.[0-9]+\) ]]; then
+              VERSION="${BASH_REMATCH[1]}"
+              TITLE=$(echo "$line" | sed 's/^### //' | sed "s/ — .*//" | tr -d '`')
+              DESC=$(echo "$line" | sed "s/^### $VERSION//" | sed 's/ — /: /')
+              
+              echo "  → Milestone: $TITLE"
+              
+              # Check if milestone exists, create if not
+              EXISTING=$(gh milestone list --json title -q ".[].title" | grep -F "$TITLE" || true)
+              if [[ -z "$EXISTING" ]]; then
+                gh milestone create "$TITLE" --description "Release $DESC" || true
+              fi
+            fi
+          done < docs/backlog.md
+          
+          # Extract and create issues from backlog items (AVL-n)
+          while IFS='|' read -r id status title rest; do
+            if [[ $id =~ AVL-[0-9]+ ]]; then
+              ID=$(echo "$id" | tr -d ' ')
+              TITLE=$(echo "$title" | xargs)  # trim whitespace
+              STATUS=$(echo "$status" | tr -d ' [] ')
+              
+              # Skip header rows and empty lines
+              if [[ "$TITLE" == "Title" ]] || [[ -z "$TITLE" ]]; then
+                continue
+              fi
+              
+              echo "    • Issue: $ID: $TITLE (status: $STATUS)"
+              
+              # Check if issue already exists by searching for ID
+              ISSUE=$(gh issue list --search "$ID in:title" --json number -q ".[0].number" 2>/dev/null || echo "")
+              
+              if [[ -z "$ISSUE" ]]; then
+                LABELS="backlog"
+                [[ "$STATUS" == "backlog" ]] && LABELS="backlog,rfc" || LABELS="backlog,ready"
+                
+                # Create issue with backlog ID in title
+                gh issue create \
+                  --title "[$ID] $TITLE" \
+                  --body "**Backlog ID**: $ID\n\nFrom: docs/backlog.md" \
+                  --label "$LABELS" \
+                  || true
+              fi
+            fi
+          done < docs/backlog.md
+          
+          echo "✅ Backlog sync complete!"
+
+      - name: Notify on completion
+        if: always()
+        run: |
+          echo "📦 Release workflow completed"
+          echo "📍 Check: https://github.com/${{ github.repository }}/milestones"
+          echo "📋 Check: https://github.com/${{ github.repository }}/issues?q=label%3Abacklog"

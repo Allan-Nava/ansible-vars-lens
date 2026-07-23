@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (Planned)
+
+### Added
+
+- Backlog automation: `docs/backlog.md` sorgente unica per milestones + feature planning
+- Release helper: `./docs/scripts/new-release.sh` per automated version bumping + CHANGELOG prep
+- GitHub Action `backlog-sync.yml`: sincronizza backlog con GitHub Milestones + issue creation on tag push
+
 ## 0.2.0
 
 ### Added

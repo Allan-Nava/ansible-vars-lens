@@ -53,6 +53,23 @@ The core (inventory parser + resolver) is dependency-free of the VS Code API and
 AVL_SMOKE_REPO=/path/to/your/ansible/repo npm test
 ```
 
+## Backlog & Releases
+
+Roadmap in **[`docs/backlog.md`](docs/backlog.md)** (sorgente unica per milestones + feature planning).
+
+To create a new release:
+
+```bash
+./docs/scripts/new-release.sh minor    # bumps version + prepares CHANGELOG
+# Edit CHANGELOG.md, then:
+git add package.json CHANGELOG.md
+git commit -m "Release vX.Y.Z"
+git tag -a vX.Y.Z -m "Release X.Y.Z"
+git push origin main --follow-tags
+```
+
+Push del tag trigga GitHub Action che sincronizza il backlog con milestone + issue.
+
 ## License
 
 MIT
