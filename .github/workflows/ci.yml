@@ -119,4 +119,4 @@ jobs:
         if: success()
         run: |
           echo "✅ Published to VS Code Marketplace"
-          echo "📍 View: https://marketplace.visualstudio.com/items?itemName=allan-nava.ansible-var-lens"
+          echo "📍 View: https://marketplace.visualstudio.com/items?itemName=allannava95.ansible-var-lens"
