@@ -8,13 +8,18 @@
 - Diagnostics rules in Problems panel
 - Config migration guide for legacy users
 
-## 0.5.0 (Planned)
+## 0.5.0
 
-### Advanced Features
+### Added
 
-- Role defaults/play vars scope (RFC)
-- Template variable preview with Jinja2 rendering
-- Inventory graph visualization (DAG/tree)
+- **Advanced Features**:
+  - Role defaults/play vars scope (RFC) — extend resolver beyond inventory layer
+  - Template variable preview with Jinja2 rendering
+  - Inventory graph visualization (DAG/tree interactive view)
+- Performance & UX improvements:
+  - Cache invalidation with FS watch debounce
+  - Slow inventory parsing warning (> 2s threshold)
+  - Syntax highlight in merged variables document
 
 ## 0.4.0
 

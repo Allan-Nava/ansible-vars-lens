@@ -2,7 +2,7 @@
   "name": "ansible-var-lens",
   "displayName": "Ansible Var Lens",
   "description": "See the EFFECTIVE value of every Ansible variable per host: merged group_vars/host_vars with precedence, provenance, inventory explorer and {{ var }} hovers.",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "publisher": "allannava95",
   "license": "MIT",
   "repository": {
