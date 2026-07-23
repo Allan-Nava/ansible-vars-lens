@@ -45,9 +45,21 @@ docs/
 └── architecture/       ← Design decision records (optional)
 ```
 
-### CI Gates
+### TDD Standard
 
-- **backlog-lint**: verifica ID stabili, niente duplicati
+LocalL **pre-commit hook** enforces TDD: tests must pass before any commit is allowed.
+
+CI: Sequential gates in `.github/workflows/ci.yml`:
+- `test`: npm test (TDD gate)
+- `type-check`: tsc --noEmit
+- `build`: npm run build
+- `package`: creates .vsix (only on tags)
+- `publish-marketplace`: auto-publishes (only on tags + VSCE_PAT)
+
+## CI Gates
+
+- **test-type-check-build**: sequential gates, each must pass before next
+- **backlog-lint**: verifica ID stabili, niente duplicati (TODO)
 - **backlog-sync**: su tag release, sincronizza con GitHub Milestones
 
 ### Labels

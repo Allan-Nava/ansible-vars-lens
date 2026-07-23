@@ -5,7 +5,7 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 
 ## Milestones
 
-### v0.3.0 — Core Improvements (Next)
+### v0.3.0 — Core Improvements
 
 | ID | Status | Title | Description |
 |----|--------|-------|-------------|
@@ -14,7 +14,7 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-3 | `[backlog]` | Copy var to clipboard | Tasto destro su variabile → copia valore/path. |
 | AVL-4 | `[backlog]` | Multi-host comparison | Selezionare 2+ host e vedere variabili side-by-side (diff). |
 
-### v0.4.0 — Performance & UX
+### v0.4.0 — Performance & UX (Next)
 
 | ID | Status | Title | Description |
 |----|--------|-------|-------------|
@@ -38,7 +38,7 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-12 | `[backlog]` | Diagnostics rules | Segnalare variabili non-risolte, undefined inventory path, vault errors in Problems panel. |
 | AVL-13 | `[backlog]` | Config migration guide | Helper per utenti da extension vecchie / config legacy. |
 
-## Done (v0.1 → v0.2)
+## Done (v0.1 → v0.4)
 
 | ID | Status | Title |
 |----|--------|-------|
@@ -48,6 +48,9 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | — | ✅ | Vault awareness |
 | — | ✅ | Auto-detection inventory path |
 | — | ✅ | `claude.md` + `agents.md` + automation skeleton |
+| — | ✅ | Backlog automation + release workflow |
+| — | ✅ | TDD Standard (pre-commit hook + CI gates) |
+| — | ✅ | VS Code Marketplace automated publishing |
 
 ## Guidelines
 

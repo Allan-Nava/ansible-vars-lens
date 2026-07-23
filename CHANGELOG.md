@@ -1,6 +1,27 @@
 # Changelog
 
-## 0.3.0 (Planned)
+## 0.5.0 (Planned)
+
+### Advanced Features
+
+- Role defaults/play vars scope (RFC)
+- Template variable preview
+- Inventory graph visualization
+
+## 0.4.0
+
+### Added
+
+- TDD Standard enforcement:
+  - Pre-commit hook (`pre-commit-hook.sh`) blocks commit if tests fail
+  - `setup-dev-environment.sh` initializes local environment with TDD hook
+  - Enhanced CI/CD pipeline with separate test/type-check/build gates
+- VS Code Marketplace automated publishing:
+  - Publish workflow triggered on release tags (requires `VSCE_PAT` secret)
+  - Automatic upload to Marketplace with no manual steps
+- Documentation: `docs/testing-release.md` with TDD standard + Marketplace setup guide
+
+## 0.3.0
 
 ### Added
 

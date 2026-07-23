@@ -40,10 +40,20 @@ Role defaults/vars and play vars are out of scope: they belong to plays, not to 
 
 ## Development
 
+### Setup (TDD enforced locally)
+
 ```bash
-npm install
-npm run build        # bundle to dist/
-npm test             # unit tests (pure Node, no VS Code needed)
+./docs/scripts/setup-dev-environment.sh
+```
+
+This installs npm packages and git pre-commit hook that enforces TDD: **tests must pass before commit**.
+
+### Development workflow
+
+```bash
+npm test             # run all unit tests (must pass before commit)
+npm run build        # bundle to dist/ (after tests pass)
+npx tsc --noEmit     # type check
 # F5 in VS Code launches the Extension Development Host
 ```
 
@@ -53,22 +63,34 @@ The core (inventory parser + resolver) is dependency-free of the VS Code API and
 AVL_SMOKE_REPO=/path/to/your/ansible/repo npm test
 ```
 
-## Backlog & Releases
+## Release & Publishing
+
+### Backlog & Milestones
 
 Roadmap in **[`docs/backlog.md`](docs/backlog.md)** (sorgente unica per milestones + feature planning).
 
-To create a new release:
+### Create a release
 
 ```bash
 ./docs/scripts/new-release.sh minor    # bumps version + prepares CHANGELOG
-# Edit CHANGELOG.md, then:
+# Edit CHANGELOG.md with details, then:
 git add package.json CHANGELOG.md
 git commit -m "Release vX.Y.Z"
 git tag -a vX.Y.Z -m "Release X.Y.Z"
 git push origin main --follow-tags
 ```
 
-Push del tag trigga GitHub Action che sincronizza il backlog con milestone + issue.
+### Automatic actions on tag push
+
+GitHub Actions trigger automatically:
+- ✅ Test gate: `npm test` must pass
+- ✅ Type check: `tsc --noEmit` must pass  
+- ✅ Build: `npm run build` must pass
+- 📦 Package: Creates `.vsix` → uploaded to GitHub Releases
+- 🎯 Backlog sync: syncs `docs/backlog.md` → GitHub Milestones + Issues
+- 🚀 Marketplace publish: auto-publishes to VS Code Marketplace (if `VSCE_PAT` secret configured)
+
+**Setup Marketplace publishing**: see [`docs/testing-release.md`](docs/testing-release.md)
 
 ## License
 
