@@ -1,12 +1,13 @@
 # Changelog
 
-## 0.6.0 (Planned)
+## 0.6.0
 
-### Integration & Polish
+### Added
 
-- MarketPlace icon/branding design
-- Diagnostics rules in Problems panel
-- Config migration guide for legacy users
+- **Integration & Polish**:
+  - Marketplace icon + branding design (AVL-11)
+  - Diagnostics rules in Problems panel (AVL-12)
+  - Config migration guide for legacy users (AVL-13)
 
 ## 0.5.0
 
