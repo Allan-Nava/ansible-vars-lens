@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.9.0
+
+### Added
+
+- **Sito GitHub Pages (AVL-21)**: landing page del progetto in `site/index.html`
+  (self-contained, tema brand scuro/rosso, responsive, con logo, feature, esempi di
+  effective vars/diff, precedence e istruzioni di install). Deploy automatico via
+  workflow `.github/workflows/pages.yml` (source = GitHub Actions, niente branch `gh-pages`).
+  URL: https://allan-nava.github.io/ansible-vars-lens/
+- Link **Website** nel `README.md`.
+
+### Changed
+
+- `.vscodeignore`: escluso `site/**` dal pacchetto `.vsix` (la landing page non deve
+  finire nell'estensione).
+
 ## 0.8.0
 
 ### Added

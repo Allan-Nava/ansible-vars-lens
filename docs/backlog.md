@@ -45,6 +45,7 @@ Ogni item ha ID stabile `AVL-n` per rintracciabilità cross-commit.
 | AVL-18 | ✅ | Diff variables between two hosts | Comando "Compare Hosts" → documento con le sole variabili che differiscono (changed / only-a / only-b), con provenance. |
 | AVL-19 | `[backlog]` | Go-to-definition | Dal nome variabile (hover/doc risolto) al file+riga che la definisce; il path vincente c'è già, manca la riga. |
 | AVL-20 | `[backlog]` | CodeLens "overridden" | Sopra una variabile in group_vars, lens "sovrascritta per N host da …". |
+| AVL-21 | ✅ | Project website (GitHub Pages) | Landing page in `site/` + workflow `pages.yml` → https://allan-nava.github.io/ansible-vars-lens/ |
 
 ## Done (v0.1 → v0.6)
 

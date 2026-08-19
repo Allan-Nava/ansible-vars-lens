@@ -45,6 +45,7 @@ Role defaults/vars and play vars are out of scope: they belong to plays, not to 
 
 ## Documentation
 
+- 🌐 **[Website](https://allan-nava.github.io/ansible-vars-lens/)** — project landing page
 - 📖 **[User Guide](docs/user/guide.md)** — setup, usage, effective vars, hover, vault, troubleshooting
 - 🎬 **[Demo script](docs/user/demo-script.md)** — storyboard della demo video (5 min)
 - 🤝 **[Contributing](CONTRIBUTING.md)** — dev setup, TDD, convenzioni commit/release, PR

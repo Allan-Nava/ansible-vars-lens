@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible Var Lens — effective Ansible variables per host, in VS Code</title>
+<meta name="description" content="See the effective value of every Ansible variable per host: merged group_vars/host_vars with precedence, provenance, inventory explorer, {{ var }} hovers and host-to-host diff — inside VS Code.">
+<link rel="icon" href="./icon.png">
+<meta property="og:title" content="Ansible Var Lens">
+<meta property="og:description" content="The effective value of every Ansible variable, per host — inside VS Code.">
+<meta property="og:image" content="./icon.png">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --bg: #12151d;
+    --bg-2: #1a1f2b;
+    --panel: #1f2430;
+    --border: #2b3242;
+    --text: #e6e9f0;
+    --muted: #9aa4bb;
+    --accent: #ff4d4d;
+    --accent-2: #c40000;
+    --code-bg: #0e1118;
+    --radius: 14px;
+    --maxw: 1080px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 70% -10%, #1c2233 0%, var(--bg) 55%);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+  /* nav */
+  header.nav { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px);
+    background: rgba(18,21,29,.7); border-bottom: 1px solid var(--border); }
+  .nav-inner { display: flex; align-items: center; gap: 14px; height: 60px; }
+  .nav-inner img { width: 30px; height: 30px; border-radius: 8px; }
+  .nav-inner strong { font-size: 1.05rem; letter-spacing: .2px; }
+  .nav-links { margin-left: auto; display: flex; gap: 22px; align-items: center; }
+  .nav-links a { color: var(--muted); font-size: .95rem; }
+  .nav-links a:hover { color: var(--text); text-decoration: none; }
+  @media (max-width: 640px) { .nav-links .hide-sm { display: none; } }
+
+  /* hero */
+  .hero { text-align: center; padding: 70px 0 40px; }
+  .hero img.logo { width: 104px; height: 104px; border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(196,0,0,.25); }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.1rem); margin: 22px 0 8px; letter-spacing: -.5px; }
+  .hero .tag { font-size: clamp(1.05rem, 2.6vw, 1.35rem); color: var(--muted); max-width: 720px; margin: 0 auto; }
+  .hero .sub { color: var(--muted); max-width: 640px; margin: 16px auto 0; font-size: 1rem; }
+  .cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 10px;
+    font-weight: 600; font-size: 1rem; border: 1px solid var(--border); transition: transform .08s ease, background .2s; }
+  .btn:hover { text-decoration: none; transform: translateY(-1px); }
+  .btn.primary { background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #fff; border-color: transparent; }
+  .btn.ghost { background: var(--panel); color: var(--text); }
+  .badges { margin-top: 22px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .badges img { height: 20px; }
+
+  /* section */
+  section { padding: 46px 0; }
+  h2 { font-size: 1.7rem; margin: 0 0 6px; letter-spacing: -.3px; }
+  .lead { color: var(--muted); margin: 0 0 28px; }
+
+  /* features */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+  .card .ic { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+    background: rgba(255,77,77,.12); color: var(--accent); font-size: 1.2rem; margin-bottom: 12px; }
+  .card h3 { margin: 0 0 6px; font-size: 1.12rem; }
+  .card p { margin: 0; color: var(--muted); font-size: .96rem; }
+
+  /* code */
+  .code-panel { background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .code-head { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--border);
+    background: var(--bg-2); font-size: .85rem; color: var(--muted); }
+  .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .dot.r{background:#ff5f56}.dot.y{background:#ffbd2e}.dot.g{background:#27c93f}
+  pre { margin: 0; padding: 18px 20px; overflow-x: auto; font-size: .9rem; line-height: 1.6;
+    font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; color: #d7dce8; }
+  .cmt { color: #6b768f; }
+  .key { color: #9db0d6; }
+  .val { color: #ff8b8b; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+
+  /* precedence list */
+  ol.prec { list-style: none; counter-reset: p; margin: 0; padding: 0; }
+  ol.prec li { counter-increment: p; position: relative; padding: 11px 14px 11px 48px; margin-bottom: 8px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px; font-size: .96rem; }
+  ol.prec li::before { content: counter(p); position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 24px; height: 24px; border-radius: 7px; background: rgba(255,77,77,.14); color: var(--accent);
+    display: grid; place-items: center; font-weight: 700; font-size: .8rem; }
+  ol.prec li:last-child { border-color: var(--accent-2); box-shadow: 0 0 0 1px rgba(255,77,77,.2) inset; }
+  .prec-note { color: var(--muted); font-size: .88rem; margin-top: 12px; }
+
+  /* install */
+  .install-box { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 18px; font-family: "SF Mono", Menlo, monospace; font-size: .92rem; color: #d7dce8;
+    display: flex; align-items: center; gap: 10px; overflow-x: auto; }
+  .install-box .p { color: var(--accent); }
+
+  footer { border-top: 1px solid var(--border); padding: 30px 0 50px; color: var(--muted); font-size: .9rem; }
+  .footer-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <img src="./icon.png" alt="">
+    <strong>Ansible Var Lens</strong>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#precedence" class="hide-sm">Precedence</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/Allan-Nava/ansible-vars-lens">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <img class="logo" src="./icon.png" alt="Ansible Var Lens logo">
+    <h1>The effective value of every Ansible variable, per host.</h1>
+    <p class="tag">Stop guessing what a variable resolves to. Ansible Var Lens merges
+      <code>group_vars</code> / <code>host_vars</code> with Ansible's precedence and shows you the
+      final value — and where it comes from — right inside VS Code.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://marketplace.visualstudio.com/items?itemName=allannava95.ansible-var-lens">
+        ⬇ Install from Marketplace
+      </a>
+      <a class="btn ghost" href="https://github.com/Allan-Nava/ansible-vars-lens">★ View on GitHub</a>
+    </div>
+    <div class="badges">
+      <img alt="VS Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/allannava95.ansible-var-lens?color=c40000&label=marketplace">
+      <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/allannava95.ansible-var-lens?color=1f2430">
+      <img alt="License" src="https://img.shields.io/badge/license-MIT-9aa4bb">
+    </div>
+  </section>
+
+  <section id="features" class="wrap">
+    <h2>What it does</h2>
+    <p class="lead">Answers the daily question — <em>"what is the final value of this variable for host X?"</em></p>
+    <div class="grid">
+      <div class="card">
+        <div class="ic">🗂️</div>
+        <h3>Inventory explorer</h3>
+        <p>Activity-bar view of groups and hosts — INI and YAML inventories, multiple files, <code>[group:children]</code>, host ranges tolerated.</p>
+      </div>
+      <div class="card">
+        <div class="ic">🎯</div>
+        <h3>Effective vars + provenance</h3>
+        <p>Click a host to see every variable merged with precedence, each annotated with the file it comes from and the files it overrides.</p>
+      </div>
+      <div class="card">
+        <div class="ic">🔍</div>
+        <h3>{{ var }} hovers</h3>
+        <p>Pick a host, then hover any <code>{{ variable }}</code> in playbooks or templates to see its resolved value for that host.</p>
+      </div>
+      <div class="card">
+        <div class="ic">⚖️</div>
+        <h3>Compare two hosts</h3>
+        <p>Diff two hosts to see <strong>only the variables that differ</strong> — changed, only-in-A or only-in-B, with provenance.</p>
+      </div>
+      <div class="card">
+        <div class="ic">🔒</div>
+        <h3>Vault-aware</h3>
+        <p>Fully vault-encrypted files are skipped and reported; inline <code>!vault</code> scalars show as <code>&lt;vaulted&gt;</code>. Never an error.</p>
+      </div>
+      <div class="card">
+        <div class="ic">⚡</div>
+        <h3>Zero setup</h3>
+        <p>Reads <code>ansible.cfg</code> or auto-detects <code>./inventory</code> / <code>./hosts</code>. No Ansible execution required.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="two">
+      <div>
+        <h2>See where every value comes from</h2>
+        <p class="lead">One click on a host, and each variable carries its full override chain.</p>
+        <div class="code-panel">
+          <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>&nbsp; web-01.yml — effective variables</div>
+<pre><span class="cmt"># from: host_vars/web-01/override.yml</span>
+<span class="cmt">#   overrides: group_vars/all/base.yml</span>
+<span class="cmt">#   overrides: group_vars/web/main.yml</span>
+<span class="key">timeout</span>: <span class="val">90</span>
+
+<span class="cmt"># from: group_vars/web/main.yml</span>
+<span class="key">nginx</span>: <span class="val">true</span></pre>
+        </div>
+      </div>
+      <div>
+        <h2>Diff two hosts</h2>
+        <p class="lead">Only the variables whose effective value differs.</p>
+        <div class="code-panel">
+          <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>&nbsp; diff: web-01 vs web-02</div>
+<pre><span class="cmt"># changed  (web-01: host_vars/…  |  web-02: group_vars/…)</span>
+<span class="key">timeout</span>:
+  <span class="key">web-01</span>: <span class="val">90</span>
+  <span class="key">web-02</span>: <span class="val">60</span>
+
+<span class="cmt"># only in web-01  (from host_vars/web-01/override.yml)</span>
+<span class="key">role_hint</span>: <span class="val">frontend</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="precedence" class="wrap">
+    <h2>Merge order modeled</h2>
+    <p class="lead">Lowest → highest precedence (Ansible's inventory layer, <code>hash_behaviour=replace</code>).</p>
+    <ol class="prec">
+      <li>inventory <code>[group:vars]</code> — parents before children</li>
+      <li><code>group_vars/all</code></li>
+      <li><code>group_vars/&lt;group&gt;</code> — parents before children, alphabetical within depth</li>
+      <li>inline inventory host vars (<code>ansible_host=…</code>)</li>
+      <li><code>host_vars/&lt;host&gt;</code> — wins</li>
+    </ol>
+    <p class="prec-note">Role defaults/vars and play vars are out of scope: they belong to plays, not to the inventory layer this extension models.</p>
+  </section>
+
+  <section id="install" class="wrap">
+    <h2>Install</h2>
+    <p class="lead">From the VS Code Marketplace, or the command line:</p>
+    <div class="install-box"><span class="p">$</span> code --install-extension allannava95.ansible-var-lens</div>
+    <p class="prec-note">Requires VS Code 1.85+. Then open any Ansible repo — the extension activates automatically on <code>ansible.cfg</code>, <code>group_vars/</code> or <code>host_vars/</code>.</p>
+    <div class="cta" style="justify-content:flex-start">
+      <a class="btn primary" href="https://marketplace.visualstudio.com/items?itemName=allannava95.ansible-var-lens">⬇ Open in Marketplace</a>
+      <a class="btn ghost" href="https://github.com/Allan-Nava/ansible-vars-lens#readme">📖 Read the docs</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>Ansible Var Lens — MIT licensed. Built by <a href="https://github.com/Allan-Nava">Allan Nava</a>.</div>
+    <div class="footer-links">
+      <a href="https://github.com/Allan-Nava/ansible-vars-lens">GitHub</a>
+      <a href="https://marketplace.visualstudio.com/items?itemName=allannava95.ansible-var-lens">Marketplace</a>
+      <a href="https://github.com/Allan-Nava/ansible-vars-lens/issues">Issues</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
